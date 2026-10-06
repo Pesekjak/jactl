@@ -17,6 +17,11 @@
 
 package io.jactl;
 
+import io.jactl.runtime.AsyncTask;
+import io.jactl.runtime.Continuation;
+import io.jactl.runtime.JactlScriptObject;
+import io.jactl.runtime.RuntimeState;
+
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -67,6 +72,14 @@ public interface JactlEnv {
    *          current thread
    */
   Object getThreadContext();
+
+  default boolean beforeAsyncWork(AsyncTask task, Continuation c, RuntimeState state, JactlScriptObject instance) {
+    return true;
+  }
+
+  default boolean beforeResumeContinuation(Continuation c, RuntimeState state, JactlScriptObject instance) {
+    return true;
+  }
 
   /**
    * <p>Save checkpoint with given id.</p>

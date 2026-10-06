@@ -49,8 +49,8 @@ import static io.jactl.JactlType.CONTINUATION;
 public class Continuation extends RuntimeException implements Checkpointable {
   private static int               VERSION = 1;
   private        AsyncTask         asyncTask;          // The blocking task that needs to be done asynchronously
-  private        Continuation      parent;             // Continuation for our parent stack frame
-  private        Continuation      child;              // Continuation of child (stack frame we are calling) if it exists
+  public         Continuation      parent;             // Continuation for our parent stack frame
+  public         Continuation      child;              // Continuation of child (stack frame we are calling) if it exists
   private        JactlMethodHandle methodHandle;       // Handle pointing to continuation wrapper function
   public         int               methodLocation;     // Location within method where resumption should continue
   public         long[]            localPrimitives;

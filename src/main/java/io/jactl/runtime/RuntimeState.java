@@ -47,8 +47,8 @@ public class RuntimeState {
   private Writer              writer;
   private BufferedReader      input;
   private Object              invocationContext;
-  private long                loopIterationCount;
-  private long                endTime;
+  public long                 loopIterationCount;
+  public long                 endTime;
 
   private static ThreadLocal<RuntimeState> threadLocalState = ThreadLocal.withInitial(RuntimeState::new);
 

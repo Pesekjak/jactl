@@ -954,6 +954,12 @@ public class JactlContext {
 
       Continuation asyncTaskCont = asyncTask.getContinuation();
 
+      if (!executionEnv.beforeAsyncWork(asyncTask, asyncTaskCont, asyncTask.getRuntimeState(), instance)) {
+        cleanUp(instance);
+        completion.accept(new Exception("Cancelled execution"));
+        return;
+      }
+
       // Test mode
       if (testCheckpointing() && !(asyncTask instanceof CheckpointTask)) {
         byte[] buf = Checkpointer.checkpoint(asyncTaskCont, RuntimeState.getState(), this, asyncTask.getSource(), asyncTask.getOffset());
@@ -986,6 +992,11 @@ public class JactlContext {
   }
 
   private void resumeContinuation(Consumer<Object> completion, Object asyncResult, Continuation cont, JactlScriptObject instance, RuntimeState state) {
+    if (!executionEnv.beforeResumeContinuation(cont, state, instance)) {
+      cleanUp(instance);
+      completion.accept(new Exception("Cancelled execution"));
+      return;
+    }
     RuntimeState.setState(state);
     try {
       Object result = cont.continueExecution(asyncResult);
